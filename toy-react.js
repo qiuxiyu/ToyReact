@@ -28,6 +28,13 @@ export class Component {
     appendChild(component) {
         this.children.push(component)
     }
+    // 不再用root进行操作
+    // 思想上的变化：从取一个元素，到把它渲染进一个range里面
+    _renderToDOM(range) {
+        this.render()._renderToDOM(range);
+    }
+    // 如果render回来的结构，是一个Component的子类，
+    // 那么它就会对root进行一个递归的调用
     get root() {
         if(!this._root) {
             this._root = this.render().root;
