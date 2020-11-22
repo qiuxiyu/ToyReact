@@ -5,7 +5,12 @@ class ElementWrapper {
         this.root = document.createElement(type);
     }
     setAttribute(name, value) {
-        this.root.setAttribute(name, value);
+        // 小s大S加方括号，一个是所有的空白，一个是所有的非空白，表示所有的字符
+        if(name.match(/^on([\s\S]+)$/)) {
+            this.root.addEventListener(RegExp.$1.replace(/^[\s\S]/, c => c.toLowerCase()), value)
+        } else {
+            this.root.setAttribute(name, value);
+        }
     }
     appendChild(component) {
         let range = document.createRange();
@@ -34,6 +39,7 @@ export class Component {
         this.props = Object.create(null);
         this.children = [];
         this._root = null;
+        this._range = null;
     }
     setAttribute(name, value) {
         this.props[name] = value;
@@ -49,16 +55,13 @@ export class Component {
     // 相当于把 Symbo("render to dom")放到了这里
     // 这种写法可以让它不太容易被访问到
     [RENDER_TO_DOM](range) {
+        this._range = range;
         this.render()[RENDER_TO_DOM](range);
     }
-    // 如果render回来的结构，是一个Component的子类，
-    // 那么它就会对root进行一个递归的调用
-    // get root() {
-    //     if(!this._root) {
-    //         this._root = this.render().root;
-    //     }
-    //     return this._root;
-    // }
+    rerender() {
+        this._range.deleteContents();
+        this[RENDER_TO_DOM](this._range);
+    }
 }
 
 export function createElement(type, attributes, ...children) {
