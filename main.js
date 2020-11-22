@@ -1,30 +1,13 @@
-class MyComponent {
+import { createElement, Component, render } from './toy-react.js'
 
+class MyComponent extends Component {
+    render() {
+        return <div>My component</div>
+    }
 }
 
-
-function createElement(type, attributes, ...children) {
-    let e;
-    if(typeof type === "string") {
-        e = document.createElement(type);
-    } else {
-        e = new type;
-    }
-
-    for(let p in attributes) {
-        e.setAttribute(p, attributes[p]);
-    }
-    for(let child of children) {
-        if(typeof child === "string") {
-            child = document.createTextNode(child);
-        }
-        e.appendChild(child);
-    }
-    return e;
-}
-
-document.body.appendChild(<MyComponent class="c" id="a">
+render(<MyComponent class="c" id="a">
     <div>abc</div>
     <div></div>
     <div></div>
-</MyComponent>)
+</MyComponent>, document.body);
