@@ -1,9 +1,16 @@
-for (let i of [1, 2, 3]) {
-    console.log(i);
+class MyComponent {
+
 }
 
-function createElement(tagName, attributes, ...children) {
-    let e = document.createElement(tagName);
+
+function createElement(type, attributes, ...children) {
+    let e;
+    if(typeof type === "string") {
+        e = document.createElement(type);
+    } else {
+        e = new type;
+    }
+
     for(let p in attributes) {
         e.setAttribute(p, attributes[p]);
     }
@@ -16,8 +23,8 @@ function createElement(tagName, attributes, ...children) {
     return e;
 }
 
-document.body.appendChild(<div class="c" id="a">
+document.body.appendChild(<MyComponent class="c" id="a">
     <div>abc</div>
     <div></div>
     <div></div>
-</div>)
+</MyComponent>)
