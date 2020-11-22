@@ -2,7 +2,10 @@ import { createElement, Component, render } from './toy-react.js'
 
 class MyComponent extends Component {
     render() {
-        return <div>My component</div>
+        return <div>
+            <h1>my component</h1>
+            {this.children}
+        </div>
     }
 }
 
